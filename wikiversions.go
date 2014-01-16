@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-	"io/ioutil"
 	"strings"
 )
 
@@ -11,22 +9,9 @@ type Wiki struct {
 	Branch string
 }
 
-type WikiVersions struct {
-    Wikis []Wiki
-}
-
 
 func ListWikis() []Wiki {
-	resp, err := http.Get("http://noc.wikimedia.org/conf/wikiversions.dat.txt")
-	if err != nil {
-		// Do something?
-	}
-	defer resp.Body.Close()
-	rawBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		// Wat
-	}
-	body := string(rawBody)
+    body := GetHttpResource("http://noc.wikimedia.org/conf/wikiversions.dat.txt")
 
     // Handle extra newline at the end of the file
 	wikisData := strings.Split(strings.TrimRight(body, "\n"), "\n")
